@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import '../scss/index.scss';
 import { Statuses } from './components/statuses';
 import { Twitter } from './components/twitter';
+import { Header } from './components/header';
 import { Footer } from './components/footer';
 import {
   ConnectFireStore,
@@ -13,8 +14,15 @@ import {
 dotenv.config();
 
 window.onload = () => {
+  if (process.env.SITE_TITLE) {
+    const title = document.createElement('title');
+    title.textContent = process.env.SITE_TITLE;
+    document.head.appendChild(title);
+  }
+
   const state = {
-    twitterAccount: process.env.TWITTER_ID || 'TwitterDev',
+    name: process.env.SITE_TITLE,
+    twitterAccount: process.env.TWITTER_ID,
     firestore: {
       statuses: []
     }
@@ -28,11 +36,11 @@ window.onload = () => {
     <div className="container pt-5">
       <div className="row justify-content-center">
         <div className="col-lg-6">
+          <Header state={state} />
           <Statuses state={state.firestore} />
         </div>
-        <div className="col-lg-4">
-          <Twitter state={state} />
-        </div>
+
+        <Twitter state={state} />
       </div>
 
       <Footer />
@@ -41,6 +49,5 @@ window.onload = () => {
 
   const App = app(state, actions, view, document.body);
 
-  const db = ConnectFireStore();
-  GetData(db).then(data => App.firestore.update(data));
+  GetData().then(data => App.firestore.update(data));
 };

@@ -2,7 +2,7 @@ import { h } from 'hyperapp';
 import { StatusColor } from './statusColor';
 
 function allStatus(statuses) {
-  if (!statuses) {
+  if (!statuses || !statuses[0]) {
     return 'Unknown';
   }
 

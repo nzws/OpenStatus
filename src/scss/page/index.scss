@@ -1,3 +1,14 @@
 body {
   @extend .bg-light;
 }
+
+.header {
+  background-image: linear-gradient(
+    to left bottom,
+    #02458d,
+    #0065a6,
+    #00809f,
+    #009679,
+    #28a745
+  );
+}

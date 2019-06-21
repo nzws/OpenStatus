@@ -11,25 +11,46 @@ export const ConnectFireStore = () => {
   return firebase.firestore();
 };
 
-export const GetData = db => {
+export const GetData = () => {
   return new Promise((resolve, reject) => {
-    db.collection('statuses')
+    const updatedAt = localStorage.getItem('status_cache_updated_at');
+
+    if (updatedAt && updatedAt > parseInt(Date.now() / 1000) - 60) {
+      resolve(JSON.parse(localStorage.getItem('status_cache')));
+      return;
+    }
+
+    ConnectFireStore()
+      .collection('statuses')
+      .doc('now')
       .get()
       .then(query => {
-        const newdata = [];
+        if (!query.exists) {
+          alert('Error: Monitoring data is not found.');
+          reject();
+        }
 
-        query.forEach(status => {
-          const data = status.data();
+        const data = query.data();
 
-          newdata.push({
-            name: status.id,
-            status: data.status,
-            updated_at: data.updated_at.toDate()
-          });
+        const newData = Object.keys(data).map(statusName => {
+          const status = data[statusName];
+
+          return {
+            name: statusName,
+            status: status.status,
+            updated_at: status.updated_at
+          };
         });
 
-        resolve(newdata);
-      });
+        localStorage.setItem('status_cache', JSON.stringify(newData));
+        localStorage.setItem(
+          'status_cache_updated_at',
+          parseInt(Date.now() / 1000)
+        );
+
+        resolve(newData);
+      })
+      .catch(() => alert('Connection failed.'));
   });
 };
 

@@ -1,7 +1,7 @@
 {
   "name": "openstatus",
   "version": "1.0.0",
-  "description": "A Open-Source Service Status Page",
+  "description": "A Open-Source, Simple, JAMstack Service Status Page.",
   "author": "nzws <git@nzws.me>",
   "license": "MIT",
   "private": true,
