@@ -4,6 +4,8 @@
 
 ![image](https://i.imgur.com/ALrZ9eu.png)
 
+> Live demo: https://status-live.knzk.me/
+
 # Features
 
 - Simple Status Page
@@ -23,7 +25,7 @@
 - Static Website Hosting - Providing Web UI
   > ex: **Netlify** (recommended), Zeit Now, GitHub Pages, Firebase hosting etc
 - [Cloud Firestore](https://firebase.google.com/docs/firestore) - Store the monitoring data
-- Google Apps Script - Running the monitoring system
+- [Google Apps Script](https://script.google.com) - Running the monitoring system
 
 # Setup
 
@@ -33,7 +35,7 @@ todo: translate to English
 
 - Go to [Firebase Console](https://console.firebase.google.com/).
 - Create the new project.
-- コンソールに異動後、 `開発 > Database` をクリックして、Firestore の管理画面に移動します。
+- コンソールに移動後、 `開発 > Database` をクリックして、Firestore の管理画面に移動します。
 - `データベースの作成` をクリックして、 `ロックモードで開始` を選択し、完了をクリックします。
 - `ルール` タブに移動し、権限を下記のように変更します:
 
@@ -62,6 +64,7 @@ service cloud.firestore {
 
 - [G Suite Developer Hub](https://script.google.com) にアクセスして、 `新規スクリプト` をクリックします。
 - 新規スクリプトのページで `リソース > ライブラリ` を開き、ライブラリを追加の欄に `1VUSl4b1r1eoNcRWotZM3e87ygkxvXltOgyDZhixqncz9lQ3MjfT1iKFw` を追加してください。
+  > ライブラリ: https://github.com/grahamearley/FirestoreGoogleAppsScript
 - `FirestoreApp` のバージョン `22` を選び、保存してください。
 - スクリプトのページに戻り、 `GAS/index.js` をそのままコピペしてください。
 - `ファイル > プロジェクトのプロパティ > スクリプトのプロパティ` に下記を入れて保存してください。
@@ -94,4 +97,20 @@ service cloud.firestore {
 
 # 4. Setup website (ex: netlify)
 
-todo
+- [Fork it](https://github.com/yuzulabo/OpenStatus/fork).
+- [Netlify](https://app.netlify.com/)に移動し、 `New site from Git` でフォークしたリポジトリを選択してください。
+- ビルドの設定をしてください。
+  - Build command: `yarn build`
+  - Publish directory: `dist`
+  - Advanced build settings
+
+| Key                     | Value                                    |
+| ----------------------- | ---------------------------------------- |
+| `SITE_TITLE`            | site title                               |
+| `TWITTER_ID` (optional) | twitter id                               |
+| `FIREBASE_API_KEY`      | Firebase Console 上の**ウェブ API キー** |
+| `FIREBASE_PROJECT_ID`   | 〃 **プロジェクト ID**                   |
+
+![image](https://i.imgur.com/z29KJd9.png)
+
+上記を設定して、ビルドすれば完了です！
